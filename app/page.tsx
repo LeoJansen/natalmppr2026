@@ -13,7 +13,7 @@ export default function Home() {
       <main className="mx-auto flex max-w-6xl flex-col gap-24 px-6 py-16 md:px-10 md:py-24 lg:px-16">
         <HeroSection />
         <ManifestSection />
-        <GoalSection />
+        
         <DonationCard />
       </main>
       <Footer />
