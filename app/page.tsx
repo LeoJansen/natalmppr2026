@@ -1,9 +1,10 @@
 import { DonationCard } from "@/components/DonationCard";
+import { DonationForm } from "@/components/DonationForm";
 import { Footer } from "@/components/Footer";
-import { GoalSection } from "@/components/GoalSection";
 import { HeroSection } from "@/components/HeroSection";
 import { ManifestSection } from "@/components/ManifestSection";
-import { goal, pixKey, raised } from "@/lib/campaignData";
+import { TransparencyPanel } from "@/components/TransparencyPanel";
+import {  pixKey  } from "@/lib/campaignData";
 
 export default function Home() {
   return (
@@ -13,7 +14,10 @@ export default function Home() {
         <ManifestSection />
         
         <DonationCard pixKey={pixKey} />
-        <GoalSection goal={goal} raised={raised} />
+        <DonationForm />
+        <TransparencyPanel />
+        
+   
       </main>
       <Footer />
     </div>
