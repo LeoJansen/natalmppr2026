@@ -1,9 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useRef } from "react";
 
 export function CertificateGenerator() {
-  const [donorName, setDonorName] = useState("Dra. Ana Silveira");
+  const [donorName, setDonorName] = useState("Dra. Vicenária Silva");
   // Mensagem padrão sem uso de IA
   const [message, setMessage] = useState(
     "Por manter acesa a chama do cuidado que aquece cada família do nosso MPPR. Sua doação garante um lugar à mesa para aqueles que cuidam de nós todos os dias."
@@ -115,42 +116,61 @@ export function CertificateGenerator() {
           >
             {/* --- Elementos Decorativos --- */}
             {/* Borda Grossa */}
-            <div className="absolute inset-5 border-4 border-[#0f254a]" />
+            <div className="absolute inset-5 border-4 border-[#0f254a] z-20 m-29 mx-39" />
             {/* Borda Fina Dourada */}
-            <div className="absolute inset-8 border border-[#d4a045]" />
+            <div className="absolute inset-8 border border-[#d4a045] z-20 m-30 mx-40" />
 
             {/* Cantos Decorativos (Círculos/Meias-luas) */}
-            <div className="absolute -left-10 -top-10 h-20 w-20 rounded-full border border-[#5d8bff] opacity-50" />
-            <div className="absolute -right-10 -top-10 h-20 w-20 rounded-full border border-[#5d8bff] opacity-50" />
-            <div className="absolute -bottom-10 -left-10 h-20 w-20 rounded-full border border-[#5d8bff] opacity-50" />
-            <div className="absolute -bottom-10 -right-10 h-20 w-20 rounded-full border border-[#5d8bff] opacity-50" />
+            <div className="absolute -left-10 -top-10 h-20 w-20 rounded-full border border-[#5d8bff] opacity-50 z-20" />
+            <div className="absolute -right-10 -top-10 h-20 w-20 rounded-full border border-[#5d8bff] opacity-50 z-20" />
+            <div className="absolute -bottom-10 -left-10 h-20 w-20 rounded-full border border-[#5d8bff] opacity-50 z-20" />
+            <div className="absolute -bottom-10 -right-10 h-20 w-20 rounded-full border border-[#5d8bff] opacity-50 z-20" />
 
             {/* Glow Central */}
-            <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-radial from-[#5d8bff]/10 to-transparent" />
+            <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-radial from-[#5d8bff]/10 to-transparent z-10" />
 
             {/* --- Conteúdo --- */}
-            <div className="relative z-10 flex h-full flex-col items-center justify-between px-20 py-16 text-center">
+            <div className="relative z-10 flex h-full flex-col items-center justify-start px-40 py-16 text-center overflow-hidden">
+                <Image
+                  src="/back-certificado3.png"
+                  alt="Logo Natal da Nossa Casa 2026"
+                  fill
+                  quality={100}
+                  sizes="(min-width: 1123px) 1123px, 100vw"
+                  className="object-cover -z-10"
+                />
               {/* Cabeçalho */}
-              <div className="mt-4">
-                <h1 className="font-serif text-[80px] font-bold leading-none text-[#0f254a]">
+              <div className="mt-4 z-10 p-20">
+                <h1 className="font-serif text-[50px] font-bold leading-none text-[#0f254a]">
                   Natal da Nossa Casa <span className="text-[#5d8bff]">2026</span>
                 </h1>
-                <div className="mt-4 inline-block rounded-full border border-[#d4a045] px-6 py-2 font-sans text-sm font-medium uppercase tracking-widest text-[#d4a045]">
+                <div className="mt-4 inline-block rounded-full border border-[#d4a045] px-6 py-2 font-sans text-sm font-medium uppercase tracking-widest text-[#d4a045] ">
                   10 anos de história
                 </div>
               </div>
+              <div className="absolute top-1/3 right-1/5">
+                <Image
+                  src="/carimbo.png"
+                  alt="Logo Natal da Nossa Casa 2026"
+                  width={120}
+                  height={120}
+                  quality={100}
+                  className="mb-8 rounded-full"
+                />  
+
+              </div>
 
               {/* Corpo */}
-              <div className="flex flex-col items-center justify-center">
-                <p className="mb-6 mt-4 font-sans text-base uppercase tracking-[0.2em] text-[#666]">
+              <div className="flex flex-col items-center justify-center z-10">
+                <p className="font-sans text-base uppercase tracking-[0.2em] text-[#666]">
                   Certificado de Gratidão conferido a
                 </p>
 
-                <div className="mb-8 px-4 font-pinyon text-[100px] leading-tight text-[#0f254a] drop-shadow-sm">
+                <div className="mb-8 px-4 font-pinyon text-[60px] leading-tight text-[#0f254a] drop-shadow-sm">
                   {donorName}
                 </div>
 
-                <p className="max-w-3xl font-serif text-2xl leading-relaxed text-[#444]">
+                <p className="max-w-2xl font-serif text-base leading-relaxed text-[#636363]">
                   {message}
                 </p>
               </div>
@@ -159,25 +179,18 @@ export function CertificateGenerator() {
               <div className="mb-4 flex w-full items-end justify-between px-12">
                 <div className="text-center">
                   <div className="mb-2 font-pinyon text-xl text-[#666]">
-                    Comissão 2026
+                    Léo Jansen
                   </div>
                   <div className="mb-2 h-px w-56 bg-[#0f254a]/30" />
                   <div className="font-sans text-xs font-bold uppercase tracking-widest text-[#0f254a]">
-                    Organização da Campanha
+                   Organização da Campanha
                   </div>
                 </div>
 
                 <div className="flex flex-col items-center opacity-80">
-                  {/* Ícone simples de casa SVG inline */}
-                  <svg
-                    className="mb-2 h-8 w-8 text-[#5d8bff]"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-                  </svg>
-                  <div className="font-sans text-[10px] uppercase tracking-[0.2em] text-[#0f254a]">
-                    Foz do Iguaçu
+                 
+                  <div className="font-sans text-[10px]  uppercase tracking-[0.2em] text-[#0f254a]">
+                    Ação Solidária de Membros e Servidores do MPPR de Foz do Iguaçu
                   </div>
                 </div>
 
