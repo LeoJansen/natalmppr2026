@@ -84,11 +84,23 @@ export function TransparencyPanel() {
   }, []);
 
   return (
-    <section className="w-full px-4 py-16">
-      <div className="mx-auto max-w-6xl rounded-3xl bg-[#1B2631] p-8 text-white shadow-2xl lg:p-12">
+    <>
+      <section className="w-full px-4 py-12 md:hidden">
+        <div className="mx-auto max-w-3xl rounded-3xl bg-[#2C3E50] p-8 text-center text-white shadow-2xl">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#EBB550]">
+            Transparência
+          </p>
+          <p className="text-base text-white/80">
+            Para consultar o extrato de doações, acesse a página no desktop.
+          </p>
+        </div>
+      </section>
+
+      <section className="hidden w-full px-4 py-16 md:block">
+      <div className="mx-auto max-w-6xl rounded-3xl bg-[#2C3E50] p-8 text-white shadow-2xl lg:p-12">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-[#C5A059]">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-[#EBB550]">
               Transparência
             </p>
             <h2 className="font-serif text-3xl font-semibold text-white">
@@ -107,18 +119,18 @@ export function TransparencyPanel() {
         <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_2fr]">
           <div className="rounded-2xl bg-white/5 p-6 border border-white/10">
             <p className="text-sm text-white/60 uppercase tracking-widest">Total Arrecadado</p>
-            <p className="mt-1 text-4xl font-bold text-[#C5A059]">{formattedTotal}</p>
+            <p className="mt-1 text-4xl font-bold text-[#EBB550]">{formattedTotal}</p>
           </div>
 
           <div className="rounded-2xl bg-white/5 p-4 border border-white/10">
             <div className="max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
               <table className="w-full text-left">
-                <thead className="sticky top-0 bg-[#1B2631] text-xs uppercase tracking-widest text-white/50">
+                <thead className="sticky top-0  text-xs uppercase tracking-widest text-white/50">
                   <tr>
                     <th className="pb-4 font-normal">Data da Doação</th>
-                    <th className="pb-4 font-normal">Nome do Doador</th>
-                    <th className="pb-4 text-right font-normal">Valor da Doação</th>
-                    <th className="pb-4 text-right font-normal">Comprovante</th>
+                    <th className="pb-4 font-normal text-center">Nome do Doador</th>
+                    <th className="pb-4 text-center font-normal">Valor da Doação</th>
+                    <th className="pb-4 text-center font-normal">Comprovante</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/10 text-sm">
@@ -142,10 +154,10 @@ export function TransparencyPanel() {
                           <td className="py-4 text-white/70">
                             {formatDonationDate(d.data)}
                           </td>
-                          <td className="py-4 font-medium text-white group-hover:text-[#C5A059] transition-colors">
+                          <td className="py-4 font-medium text-white group-hover:text-[#EBB550] transition-colors">
                             {d.nome}
                           </td>
-                          <td className="py-4 text-right font-semibold text-[#C5A059]">
+                          <td className="py-4 text-center font-semibold text-[#EBB550]">
                             {formatDonationValue(d.valor)}
                           </td>
                           <td className="py-4 text-right">
@@ -154,7 +166,7 @@ export function TransparencyPanel() {
                                 href={donationLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-xs font-semibold uppercase tracking-wide text-white/70 underline-offset-2 hover:text-[#C5A059] hover:underline"
+                                className="text-xs font-semibold uppercase tracking-wide text-white/70 underline-offset-2 hover:text-[#EBB550] hover:underline"
                               >
                                 Abrir arquivo
                               </a>
@@ -182,6 +194,7 @@ export function TransparencyPanel() {
           * Atualizamos automaticamente a cada 30 segundos.
         </p>
       </div>
-    </section>
+      </section>
+    </>
   );
 }

@@ -44,7 +44,7 @@ export function HeroSection() {
     if (isMobile) {
         return <HeroSectionMobile />;
     }
-    
+
     return (
         <section className="relative overflow-hidden min-h-screen bg-[#080A16] text-white shadow-[0_40px_120px_rgba(5,6,15,0.55)]">
             <div className="absolute inset-0">
@@ -78,8 +78,11 @@ export function HeroSection() {
                                 convidamos você a manter acesa a chama de cuidado que aquece cada família do nosso MPPR.
                             </p>
                         </div>
-                        <div className="border-3 border-[#EBB550] flex h-fit px-8 py-4 rounded-full">
-                            <p className="text-2xl text-[#EBB550]">10 anos de história</p>
+                        <div className="">
+                            <p className="inline-flex items-center gap-2 rounded-full border-2 border-[#EBB550] px-8 py-4 text-lg text-white/85">
+                                <span className="text-[#EBB550] font-semibold">10ª edição</span>
+                                da campanha.
+                            </p>
 
                         </div>
 

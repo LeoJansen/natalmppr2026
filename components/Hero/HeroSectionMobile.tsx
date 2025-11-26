@@ -23,7 +23,7 @@ export function HeroSectionMobile() {
                 <div className="space-y-4">
                     <p className="inline-flex items-center gap-2 rounded-full border border-white/40 px-4 py-1 text-[0.8rem] text-white/85">
                         <span className="text-[#EBB550] font-semibold">10ª edição</span>
-                        Natal da Nossa Casa
+                        da campanha.
                     </p>
                     <h1 className="text-4xl font-semibold leading-snug">
                         Natal da Nossa Casa
@@ -36,16 +36,7 @@ export function HeroSectionMobile() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 text-left">
-                <div className="rounded-2xl bg-white/5 p-4">
-                    <p className="text-3xl font-bold text-[#EBB550]">+600</p>
-                    <p className="text-xs uppercase tracking-wide text-white/65">Famílias alcançadas</p>
-                </div>
-                <div className="rounded-2xl bg-white/5 p-4">
-                    <p className="text-3xl font-bold text-[#6CA0FF]">10 anos</p>
-                    <p className="text-xs uppercase tracking-wide text-white/65">De solidariedade</p>
-                </div>
-            </div>
+          
 
             <div className="flex flex-col gap-4">
                 <a
@@ -54,9 +45,7 @@ export function HeroSectionMobile() {
                 >
                     Participar agora
                 </a>
-                <p className="text-center text-xs text-white/65">
-                    Transparência total das doações e impacto social de cada contribuição.
-                </p>
+          
             </div>
         </section>
     );

@@ -2,8 +2,8 @@
 
 
 :root {
-  --background: #f5f5f0;
-  --foreground: #333333;
+  --background: #F9F7F2; /* Linho Off-White: Acolhedor */
+  --foreground: #2C3E50; /* Azul Petróleo: Leitura elegante */
 }
 
 @media (prefers-color-scheme: dark) {
