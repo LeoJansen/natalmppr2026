@@ -9,18 +9,27 @@ const HeroSectionMobile = dynamic(() => import("./HeroSectionMobile").then((mod)
 
 
 export function HeroSection() {
-    const [isMobile, setIsMobile] = useState(() => {
-        if (typeof window === "undefined") {
-            return false;
-        }
-        return window.matchMedia("(max-width: 768px)").matches;
-    });
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
+        if (typeof window === "undefined") {
+            return;
+        }
+
         const mediaQuery = window.matchMedia("(max-width: 768px)");
 
+        const updateIsMobile = (event?: MediaQueryListEvent) => {
+            if (event) {
+                setIsMobile(event.matches);
+                return;
+            }
+            setIsMobile(mediaQuery.matches);
+        };
+
+        updateIsMobile();
+
         const handleViewportChange = (event: MediaQueryListEvent) => {
-            setIsMobile(event.matches);
+            updateIsMobile(event);
         };
 
         if (typeof mediaQuery.addEventListener === "function") {
