@@ -187,11 +187,15 @@ export function CertificateGenerator() {
                   </div>
                 </div>
 
-                <div className="flex flex-col items-center opacity-80">
-                 
-                  <div className="font-sans text-[10px]  uppercase tracking-[0.2em] text-[#0f254a]">
-                    Ação Solidária de Membros e Servidores do MPPR de Foz do Iguaçu
-                  </div>
+                <div className="flex h-full items-center">
+                 <Image
+                 src="/logo-certificado.png"
+                 alt="Assinatura Roberto"
+                 width={759}
+                 height={769}
+                 quality={100}
+                 className="w-40 rounded-full"
+                 />
                 </div>
 
                 <div className="text-center">
