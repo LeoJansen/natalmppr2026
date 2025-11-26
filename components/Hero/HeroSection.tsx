@@ -1,6 +1,41 @@
+"use client";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+
+const HeroSectionMobile = dynamic(() => import("./HeroSectionMobile").then((mod) => mod.HeroSectionMobile), {
+    ssr: false,
+});
+
 
 export function HeroSection() {
+    const [isMobile, setIsMobile] = useState(() => {
+        if (typeof window === "undefined") {
+            return false;
+        }
+        return window.matchMedia("(max-width: 768px)").matches;
+    });
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(max-width: 768px)");
+
+        const handleViewportChange = (event: MediaQueryListEvent) => {
+            setIsMobile(event.matches);
+        };
+
+        if (typeof mediaQuery.addEventListener === "function") {
+            mediaQuery.addEventListener("change", handleViewportChange);
+            return () => mediaQuery.removeEventListener("change", handleViewportChange);
+        }
+
+        mediaQuery.addListener(handleViewportChange);
+        return () => mediaQuery.removeListener(handleViewportChange);
+    }, []);
+
+    if (isMobile) {
+        return <HeroSectionMobile />;
+    }
+    
     return (
         <section className="relative overflow-hidden min-h-screen bg-[#080A16] text-white shadow-[0_40px_120px_rgba(5,6,15,0.55)]">
             <div className="absolute inset-0">

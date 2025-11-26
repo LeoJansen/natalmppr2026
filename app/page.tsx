@@ -1,7 +1,7 @@
 import { DonationCard } from "@/components/DonationCard";
 import { DonationForm } from "@/components/DonationForm";
 import { Footer } from "@/components/Footer";
-import { HeroSection } from "@/components/HeroSection";
+import { HeroSection } from "@/components/Hero/HeroSection";
 import { ManifestSection } from "@/components/ManifestSection";
 import { TransparencyPanel } from "@/components/TransparencyPanel";
 import {  pixKey  } from "@/lib/campaignData";
