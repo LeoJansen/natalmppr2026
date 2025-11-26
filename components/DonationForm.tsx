@@ -1,11 +1,24 @@
 "use client";
 
-import { type FormEvent, useState } from "react";
+import { type FormEvent, type KeyboardEvent, useState } from "react";
 import { GOOGLE_APPS_SCRIPT_URL } from "@/lib/api";
 
 export function DonationForm() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  const blockDecimalInput = (event: KeyboardEvent<HTMLInputElement>) => {
+    if ([".", ",", "Decimal", "NumpadDecimal"].includes(event.key)) {
+      event.preventDefault();
+    }
+  };
+
+  const enforceIntegerValue = (event: FormEvent<HTMLInputElement>) => {
+    const sanitized = event.currentTarget.value.replace(/[^\d]/g, "");
+    if (sanitized !== event.currentTarget.value) {
+      event.currentTarget.value = sanitized;
+    }
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -112,6 +125,10 @@ export function DonationForm() {
               name="valor"
               type="number"
               required
+              inputMode="numeric"
+              pattern="[0-9]*"
+              onKeyDown={blockDecimalInput}
+              onInput={enforceIntegerValue}
               className="w-full rounded-lg border border-gray-200 bg-[#F9F9F9] p-4 text-[#1B2631] outline-none focus:border-[#C5A059] focus:ring-1 focus:ring-[#C5A059] transition-all"
               placeholder="Ex: 300"
             />
