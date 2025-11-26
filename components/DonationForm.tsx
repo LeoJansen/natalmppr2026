@@ -112,9 +112,8 @@ export function DonationForm() {
               name="valor"
               type="number"
               required
-              step="0.01"
               className="w-full rounded-lg border border-gray-200 bg-[#F9F9F9] p-4 text-[#1B2631] outline-none focus:border-[#C5A059] focus:ring-1 focus:ring-[#C5A059] transition-all"
-              placeholder="Ex: 300,00"
+              placeholder="Ex: 300"
             />
           </div>
 

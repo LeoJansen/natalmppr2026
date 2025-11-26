@@ -200,7 +200,7 @@ export function CertificateGenerator() {
 
                 <div className="text-center">
                   <div className="mb-3 font-sans text-sm text-[#666]">
-                    Dezembro, 2026
+                    Dezembro, 2025
                   </div>
                   <div className="mb-2 h-px w-56 bg-[#0f254a]/30" />
                   <div className="font-sans text-xs font-bold uppercase tracking-widest text-[#0f254a]">

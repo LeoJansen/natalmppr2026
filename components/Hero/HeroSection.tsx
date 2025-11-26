@@ -68,7 +68,7 @@ export function HeroSection() {
                             <span className="ml-1 text-white/70">de Foz do Iguaçu</span>
                         </p>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex flex-col 2xl:flex-row justify-between items-between h-full gap-8 lg:gap-16">
                         <div className="space-y-4 max-w-3xl">
                             <h1 className="text-4xl font-semibold leading-tight sm:text-5xl lg:text-6xl">
                                 Natal da Nossa Casa <span className="font-bold text-[#5193eb] text-6xl lg:text-7xl">2026</span>
@@ -93,7 +93,7 @@ export function HeroSection() {
                 </div>
 
 
-                <div className="flex  w-full  gap-4 text-sm flex-row items-center justify-center">
+                <div className="flex  w-full  gap-4 text-sm flex-row items-center justify-center hidden">
                     <a
                         href="#doacao"
                         className="inline-flex items-center justify-center rounded-full bg-[#5C6CFF] px-8 py-3 text-base font-semibold uppercase tracking-wide text-white transition hover:bg-[#7b88ff]"
