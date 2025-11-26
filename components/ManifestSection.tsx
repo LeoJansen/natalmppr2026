@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export function ManifestSection() {
     return (
-        <section className="grid gap-10  bg-[#F5F5F0] px-4 py-4 md:grid-cols-2 md:gap-16">
+        <section className="grid gap-10  bg-[#F5F5F0] px-4 py-4 xl:grid-cols-2 md:gap-16">
             <div className="space-y-6 rounded-3xl bg-white p-10 shadow-xl">
                 <p className="text-xl tracking-[0.25em] text-[#C5A059]">Sobre a nossa campanha</p>
                 <h2 className="text-3xl text-[#1B2631]">Um gesto nosso, um Natal inteiro para eles.</h2>
@@ -22,7 +22,7 @@ export function ManifestSection() {
                 </p>
                 
             </div>
-            <div className="relative rounded-3xl">
+            <div className="relative rounded-3xl aspect-square">
                 <div className="relative h-full min-h-[360px] overflow-hidden rounded-3xl border border-[#C5A059]/30 shadow-2xl">
                     <Image
                         src="/cartao3.png"
