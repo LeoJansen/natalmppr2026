@@ -74,7 +74,7 @@ export function HeroSection() {
                                 Natal da Nossa Casa <span className="font-bold text-[#5193eb] text-6xl lg:text-7xl">2026</span>
                             </h1>
                             <p className="text-lg text-white/85 lg:text-xl">
-                                Uma década de gratidão a quem garante cuida de nós todos os dias. Neste ano histórico,
+                                Uma década de gratidão a quem cuida de nós todos os dias. Neste ano histórico,
                                 convidamos você a manter acesa a chama de cuidado que aquece cada família do nosso MPPR.
                             </p>
                         </div>

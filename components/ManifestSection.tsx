@@ -7,8 +7,11 @@ export function ManifestSection() {
                 <p className="text-xl tracking-[0.25em] text-[#C5A059]">Sobre a nossa campanha</p>
                 <h2 className="text-3xl text-[#1B2631]">Um gesto nosso, um Natal inteiro para eles.</h2>
                 <p className="text-lg text-[#333333]/90">
-                    Muita coisa muda numa década. Promotores chegam e partem, servidores mudam de promotoria, leis alteram-se. Mas aqui no MPPR de Foz do Iguaçu, existe um sentimento que permanece inalterado.
-                    Enquanto estamos focados nos prazos, nas audiências e no atendimento ao público, existe uma equipe de bastidores que garante que garante que a nossa casa funcione. São eles que preparam o espaço onde a justiça acontece todos os dias.
+                   Muita coisa muda numa década. Promotores chegam do interior, outros partem para a capital. Servidores mudam de promotoria, outros aposentam sua jornada de serviço público. Leis alteram-se e justiça se transforma. Mas aqui no MPPR de Foz do Iguaçu, existe um sentimento que permanece inalterado.
+                </p>
+                    <p className="text-lg text-[#333333]/90">
+                 Enquanto estamos focados nos prazos, nas audiências e no atendimento ao público, existe uma equipe de bastidores que garante que garante que a nossa casa funcione. São eles que fazem o café quente que nos desperta, a mesa limpa que organiza nosso dia e a segurança atenta que nos protege na portaria. São responsáveis por todo cenário onde a justiça acontece todos os dias.
+
                 </p>
                 <p className="text-lg text-[#333333]/90">
                     Desde 2015, nós — membros e servidores — decidimos que esse cuidado diário merecia ser retribuído. O que começou como uma iniciativa tímida tornou-se, ao longo de 10 anos, a nossa tradição interna mais nobre.

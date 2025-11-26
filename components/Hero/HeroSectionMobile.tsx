@@ -30,8 +30,7 @@ export function HeroSectionMobile() {
                         <span className="block text-[#5193eb] text-5xl font-bold">2026</span>
                     </h1>
                     <p className="text-base text-white/80">
-                        Uma década de cuidado com quem garante o acolhimento das nossas famílias todos os dias.
-                        Junte-se a nós para manter essa chama acesa.
+                        Uma década de gratidão a quem cuida de nós todos os dias. Neste ano histórico, convidamos você a manter acesa a chama de cuidado que aquece cada família do nosso MPPR.
                     </p>
                 </div>
             </div>
