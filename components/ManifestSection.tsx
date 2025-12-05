@@ -2,43 +2,67 @@ import Image from "next/image";
 
 export function ManifestSection() {
     return (
-        <section className="grid gap-10  bg-[#F5F5F0] px-4 py-4 xl:grid-cols-2 md:gap-16">
-            <div className="space-y-6 rounded-3xl bg-white p-10 shadow-xl">
-                <p className="text-xl tracking-[0.25em] text-[#C5A059]">Sobre a nossa campanha</p>
-                <h2 className="text-3xl text-[#1B2631]">Um gesto nosso, um Natal inteiro para eles.</h2>
-                <p className="text-lg text-[#333333]/90">
-                   Muita coisa muda numa década. Promotores chegam do interior, outros partem para a capital. Servidores mudam de promotoria, outros aposentam sua jornada de serviço público. Leis alteram-se e justiça se transforma. Mas aqui no MPPR de Foz do Iguaçu, existe um sentimento que permanece inalterado.
-                </p>
-                    <p className="text-lg text-[#333333]/90">
-                 Enquanto estamos focados nos prazos, nas audiências e no atendimento ao público, existe uma equipe de bastidores que garante que garante que a nossa casa funcione. São eles que fazem o café quente que nos desperta, a mesa limpa que organiza nosso dia e a segurança atenta que nos protege na portaria. São responsáveis por todo cenário onde a justiça acontece todos os dias.
+        <section id="manifesto" className="relative z-10 w-full overflow-hidden bg-white px-6 py-24 md:py-32 lg:px-20">
+            <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:gap-20">
+                {/* Text Content */}
+                <div className="flex flex-col justify-center space-y-8">
+                    <div>
+                        <p className="mb-4 text-sm font-bold uppercase tracking-widest text-[#EB9E50]">
+                            Manifesto da 10ª Edição
+                        </p>
+                        <h2 className="font-playfair text-4xl font-semibold leading-tight text-[#9b9b9b] md:text-5xl">
+                            Um gesto nosso, <br />
+                            <span className="italic text-[#9b9b9b]/80">um Natal inteiro para eles.</span>
+                        </h2>
+                    </div>
 
-                </p>
-                <p className="text-lg text-[#333333]/90">
-                    Desde 2015, nós — membros e servidores — decidimos que esse cuidado diário merecia ser retribuído. O que começou como uma iniciativa tímida tornou-se, ao longo de 10 anos, a nossa tradição interna mais nobre.
-                </p>
-                <p className="text-xl text-[#C5A059]">Hoje, celebramos uma década de gratidão.</p>
-                  <p className="text-lg text-[#333333]/90">
-                  Esta Edição Histórica é um convite entre colegas. Não se trata de caridade, mas de reconhecimento. O valor da doação é livre, mas o objetivo é único: garantir que, neste Natal, a equipe que cuida da nossa segunda casa leve conforto e fartura para a sua própria casa.
-                </p>
-                <p className="text-lg text-[#333333]/90">
-                    A mesa está posta para a solidariedade. O seu lugar nesta história está reservado. Vamos, juntos, fazer do 10.º ano o maior da nossa história.
-                </p>
-                
-            </div>
-            <div className="relative rounded-3xl aspect-square">
-                <div className="relative h-full min-h-[360px] overflow-hidden rounded-3xl border border-[#C5A059]/30 shadow-2xl">
-                    <Image
-                        src="/cartao3.png"
-                        alt="Equipe cuidando do espaço da promotoria"
-                        fill
-                        quality={100}
-                        sizes="100vw"
-                        className="object-cover "
-                        priority
-                    />
-                        
-                  
-            
+                    <div className="space-y-6 text-lg leading-relaxed text-[#565e69]">
+                        <p>
+                            Muita coisa muda numa década. Promotores chegam, outros partem.
+                            Leis se transformam e a justiça evolui. Mas aqui no MPPR de Foz do Iguaçu,
+                            existe um sentimento que permanece inalterado: <span className="font-semibold text-[#5e6583]">a gratidão</span>.
+                        </p>
+                        <p>
+                            Enquanto focamos nos prazos e audiências, uma equipe de bastidores garante
+                            que nossa casa funcione. São eles que preparam o café que nos desperta,
+                            mantêm o ambiente limpo e garantem nossa segurança na portaria.
+                        </p>
+                        <p>
+                            Desde 2015, decidimos que esse cuidado merecia ser retribuído.
+                            O que começou como uma iniciativa tímida tornou-se nossa tradição mais nobre.
+                        </p>
+                        <p className="border-l-4 border-[#D4AF37] pl-6 font-playfair text-xl italic text-[#9b9b9b]">
+                            "Esta Edição Histórica não é caridade, é reconhecimento.
+                            Garantimos que quem cuida da nossa segunda casa leve conforto para a sua própria casa."
+                        </p>
+                    </div>
+                </div>
+
+                {/* Image Composition */}
+                <div className="relative">
+                    <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl shadow-2xl">
+                        <Image
+                            src="/cartao3.png"
+                            alt="Equipe reunida"
+                            fill
+                            className="object-cover transition-transform duration-700 hover:scale-105"
+                            sizes="(min-width: 1024px) 50vw, 100vw"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/40 to-transparent" />
+
+                        <div className="absolute bottom-8 left-8 right-8 rounded-xl bg-white/10 p-6 backdrop-blur-md border border-white/20">
+                            <p className="font-playfair text-2xl text-white">
+                                10 Anos de História
+                            </p>
+                            <p className="text-sm font-medium text-white/80">
+                                Uma memória construída por todos nós.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Decorative Element */}
+                    <div className="absolute -bottom-6 -right-6 -z-10 h-64 w-64 rounded-full bg-[#D4AF37]/10 blur-3xl" />
+                    <div className="absolute -top-6 -left-6 -z-10 h-64 w-64 rounded-full bg-[#3B82F6]/10 blur-3xl" />
                 </div>
             </div>
         </section>

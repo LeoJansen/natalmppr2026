@@ -8,18 +8,17 @@ import { ContractorDistribution } from "@/components/ContractorDistribution";
 import { pixKey } from "@/lib/campaignData";
 
 export default function Home() {
-  return (
-    <div className="min-h-screen bg-[#0b0b20] text-[#dadada]">
-      <main className="">
-        <HeroSection />
-        <ManifestSection />
-        <DonationCard pixKey={pixKey} />
-        <DonationForm />
-       
-        <TransparencyPanel />
- <ContractorDistribution />
-      </main>
-      <Footer />
-    </div>
-  );
+    return (
+        <div className="min-h-screen">
+            <main>
+                <HeroSection />
+                <ManifestSection />
+                <DonationCard pixKey={pixKey} />
+                <DonationForm />
+                <TransparencyPanel />
+                <ContractorDistribution />
+            </main>
+            <Footer />
+        </div>
+    );
 }

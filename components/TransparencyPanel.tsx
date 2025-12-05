@@ -4,197 +4,197 @@ import { useEffect, useMemo, useState } from "react";
 import { GOOGLE_APPS_SCRIPT_URL } from "@/lib/api";
 
 type Doador = {
-  nome: string;
-  data: string;
-  valor?: number | string;
-  link?: string;
-  arquivo?: string;
-  arquivoUrl?: string;
+    nome: string;
+    data: string;
+    valor?: number | string;
+    link?: string;
+    arquivo?: string;
+    arquivoUrl?: string;
 };
 
 export type DonationStats = {
-  total: number;
-  doadores: Doador[];
+    total: number;
+    doadores: Doador[];
 };
 
 export function TransparencyPanel() {
-  const [stats, setStats] = useState<DonationStats>({ total: 0, doadores: [] });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+    const [stats, setStats] = useState<DonationStats>({ total: 0, doadores: [] });
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-  const currencyFormatter = useMemo(() => new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }), []);
+    const currencyFormatter = useMemo(() => new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+    }), []);
 
-  const dateFormatter = useMemo(() => new Intl.DateTimeFormat("pt-BR", {
-    dateStyle: "short",
-  }), []);
+    const dateFormatter = useMemo(() => new Intl.DateTimeFormat("pt-BR", {
+        dateStyle: "short",
+    }), []);
 
-  const formattedTotal = useMemo(() => currencyFormatter.format(stats.total || 0), [currencyFormatter, stats.total]);
+    const formattedTotal = useMemo(() => currencyFormatter.format(stats.total || 0), [currencyFormatter, stats.total]);
 
-  const formatDonationDate = (value: string) => {
-    if (!value) return "—";
-    const parsed = new Date(value);
-    if (Number.isNaN(parsed.getTime())) {
-      return value;
-    }
-    return dateFormatter.format(parsed);
-  };
+    const formatDonationDate = (value: string) => {
+        if (!value) return "—";
+        const parsed = new Date(value);
+        if (Number.isNaN(parsed.getTime())) return value;
+        return dateFormatter.format(parsed);
+    };
 
-  const formatDonationValue = (value: Doador["valor"]) => {
-    if (value === undefined || value === null || value === "") {
-      return "—";
-    }
+    const formatDonationValue = (value: Doador["valor"]) => {
+        if (value === undefined || value === null || value === "") return "—";
 
-    const normalized = typeof value === "number"
-      ? value
-      : Number(String(value).replace(/\./g, "").replace(",", "."));
+        const normalized = typeof value === "number"
+            ? value
+            : Number(String(value).replace(/\./g, "").replace(",", "."));
 
-    if (!Number.isFinite(normalized) || normalized <= 0) {
-      return "—";
-    }
+        if (!Number.isFinite(normalized) || normalized <= 0) return "—";
 
-    return currencyFormatter.format(normalized);
-  };
+        return currencyFormatter.format(normalized);
+    };
 
-  const resolveDonationLink = (donor: Doador) => donor.link ?? donor.arquivoUrl ?? donor.arquivo ?? "";
+    const resolveDonationLink = (donor: Doador) => donor.link ?? donor.arquivoUrl ?? donor.arquivo ?? "";
 
-  const fetchStats = async () => {
-    try {
-      setError(null);
-      const res = await fetch(GOOGLE_APPS_SCRIPT_URL, { cache: "no-store" });
-      if (!res.ok) throw new Error("Falha ao carregar os dados");
+    const fetchStats = async () => {
+        try {
+            setError(null);
+            const res = await fetch(GOOGLE_APPS_SCRIPT_URL, { cache: "no-store" });
+            if (!res.ok) throw new Error("Falha ao carregar os dados");
 
-      const data: DonationStats = await res.json();
-      setStats(data);
-    } catch (err) {
-      console.error(err);
-      setError("Não foi possível carregar a lista de doadores agora.");
-    } finally {
-      setLoading(false);
-    }
-  };
+            const data: DonationStats = await res.json();
+            setStats(data);
+        } catch (err) {
+            console.error(err);
+            setError("Não foi possível carregar a lista de doadores agora.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  useEffect(() => {
-    fetchStats();
+    useEffect(() => {
+        fetchStats();
+        const intervalId = setInterval(fetchStats, 30000);
+        return () => clearInterval(intervalId);
+    }, []);
 
-    const intervalId = setInterval(fetchStats, 30000);
-    return () => clearInterval(intervalId);
-  }, []);
+    return (
+        <>
+            <section className="w-full px-4 py-12 md:hidden">
+                <div className="glass-panel mx-auto max-w-3xl rounded-3xl p-8 text-center shadow-lg">
+                    <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
+                        Transparência
+                    </p>
+                    <p className="text-sm text-[#94a3b8]">
+                        Para consultar o extrato detalhado, acesse via desktop.
+                    </p>
+                </div>
+            </section>
 
-  return (
-    <>
-      <section className="w-full px-4 py-12 md:hidden">
-        <div className="mx-auto max-w-3xl rounded-3xl bg-[#2C3E50] p-8 text-center text-white shadow-2xl">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#EBB550]">
-            Transparência
-          </p>
-          <p className="text-base text-white/80">
-            Para consultar o extrato de doações, acesse a página no desktop.
-          </p>
-        </div>
-      </section>
+            <section className="hidden w-full px-4 py-24 md:block bg-[#020617] relative">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#0f172a] via-[#020617] to-[#020617] opacity-60"></div>
 
-      <section className="hidden w-full px-4 py-16 md:block">
-      <div className="mx-auto max-w-6xl rounded-3xl bg-[#2C3E50] p-8 text-white shadow-2xl lg:p-12">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-[#EBB550]">
-              Transparência
-            </p>
-            <h2 className="font-serif text-3xl font-semibold text-white">
-              Quem já garantiu um lugar à mesa
-            </h2>
-          </div>
-          <button
-            onClick={fetchStats}
-            className="rounded-full border border-white/30 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:border-white"
-            disabled={loading}
-          >
-            {loading ? "Carregando..." : "Atualizar"}
-          </button>
-        </div>
+                <div className="relative mx-auto max-w-7xl">
+                    <div className="flex flex-wrap items-end justify-between gap-8 mb-12">
+                        <div>
+                            <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[#EB9E50]">
+                                Transparência
+                            </p>
+                            <h2 className="font-playfair text-4xl font-medium text-white">
+                                Quem já garantiu um lugar à mesa
+                            </h2>
+                        </div>
+                        <button
+                            onClick={fetchStats}
+                            className="group flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-wider text-white transition-all hover:bg-white/10 hover:border-[#EB9E50]/50"
+                            disabled={loading}
+                        >
+                            <span className={`h-2 w-2 rounded-full bg-[#EB9E50] ${loading ? 'animate-pulse' : ''}`} />
+                            {loading ? "Atualizando..." : "Atualizar Dados"}
+                        </button>
+                    </div>
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_2fr]">
-          <div className="rounded-2xl bg-white/5 p-6 border border-white/10">
-            <p className="text-sm text-white/60 uppercase tracking-widest">Total Arrecadado</p>
-            <p className="mt-1 text-4xl font-bold text-[#EBB550]">{formattedTotal}</p>
-          </div>
+                    <div className="grid gap-8 lg:grid-cols-[300px_1fr]">
+                        {/* Total Card */}
+                        <div className="glass-card h-fit rounded-3xl p-8">
+                            <p className="text-xs font-bold uppercase tracking-widest text-[#94a3b8]">Total Arrecadado</p>
+                            <p className="mt-4 font-playfair text-5xl font-medium text-[#EB9E50]">{formattedTotal}</p>
+                            <div className="mt-4 h-1 w-full rounded-full bg-white/5">
+                                <div className="h-full w-24 rounded-full bg-[#EB9E50]/50" />
+                            </div>
+                            <p className="mt-4 text-sm text-[#64748b]">
+                                * Valores atualizados em tempo real.
+                            </p>
+                        </div>
 
-          <div className="rounded-2xl bg-white/5 p-4 border border-white/10">
-            <div className="max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-              <table className="w-full text-left">
-                <thead className="sticky top-0  text-xs uppercase tracking-widest text-white/50">
-                  <tr>
-                    <th className="pb-4 font-normal">Data da Doação</th>
-                    <th className="pb-4 font-normal text-center">Nome do Doador</th>
-                    <th className="pb-4 text-center font-normal">Valor da Doação</th>
-                    <th className="pb-4 text-center font-normal">Comprovante</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/10 text-sm">
-                  {loading ? (
-                    <tr>
-                      <td colSpan={4} className="py-8 text-center text-white/60">
-                        Carregando lista de doadores...
-                      </td>
-                    </tr>
-                  ) : error ? (
-                    <tr>
-                      <td colSpan={4} className="py-8 text-center text-red-300">
-                        {error}
-                      </td>
-                    </tr>
-                  ) : stats.doadores && stats.doadores.length > 0 ? (
-                    stats.doadores.map((d, i) => {
-                      const donationLink = resolveDonationLink(d);
-                      return (
-                        <tr key={`${d.nome}-${i}`} className="group">
-                          <td className="py-4 text-white/70">
-                            {formatDonationDate(d.data)}
-                          </td>
-                          <td className="py-4 font-medium text-white group-hover:text-[#EBB550] transition-colors">
-                            {d.nome}
-                          </td>
-                          <td className="py-4 text-center font-semibold text-[#EBB550]">
-                            {formatDonationValue(d.valor)}
-                          </td>
-                          <td className="py-4 text-right">
-                            {donationLink ? (
-                              <a
-                                href={donationLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-xs font-semibold uppercase tracking-wide text-white/70 underline-offset-2 hover:text-[#EBB550] hover:underline"
-                              >
-                                Abrir arquivo
-                              </a>
-                            ) : (
-                              <span className="text-white/40">—</span>
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })
-                  ) : (
-                    <tr>
-                      <td colSpan={4} className="py-8 text-center text-white/40 italic">
-                        Ainda não há doações registradas.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <p className="mt-8 text-center text-xs text-white/40">
-          * Atualizamos automaticamente a cada 30 segundos.
-        </p>
-      </div>
-      </section>
-    </>
-  );
+                        {/* Table Card */}
+                        <div className="glass-panel overflow-hidden rounded-3xl border border-white/5 bg-[#0f172a]/40">
+                            <div className="max-h-[600px] overflow-y-auto custom-scrollbar">
+                                <table className="w-full text-left">
+                                    <thead className="sticky top-0 bg-[#0f172a] text-xs font-bold uppercase tracking-widest text-[#64748b] shadow-sm">
+                                        <tr>
+                                            <th className="px-6 py-5 font-bold">Data</th>
+                                            <th className="px-6 py-5 font-bold">Doador</th>
+                                            <th className="px-6 py-5 text-right font-bold">Valor</th>
+                                            <th className="px-6 py-5 text-right font-bold">Comprovante</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-white/5 text-sm">
+                                        {loading && stats.doadores.length === 0 ? (
+                                            <tr>
+                                                <td colSpan={4} className="py-12 text-center text-[#94a3b8]">
+                                                    Carregando lista de doadores...
+                                                </td>
+                                            </tr>
+                                        ) : error ? (
+                                            <tr>
+                                                <td colSpan={4} className="py-12 text-center text-red-400">
+                                                    {error}
+                                                </td>
+                                            </tr>
+                                        ) : stats.doadores.length > 0 ? (
+                                            stats.doadores.map((d, i) => {
+                                                const donationLink = resolveDonationLink(d);
+                                                return (
+                                                    <tr key={`${d.nome}-${i}`} className="group transition-colors hover:bg-white/[0.02]">
+                                                        <td className="px-6 py-4 text-[#94a3b8] group-hover:text-white transition-colors">
+                                                            {formatDonationDate(d.data)}
+                                                        </td>
+                                                        <td className="px-6 py-4 font-medium text-white">
+                                                            {d.nome}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-right font-medium text-[#EB9E50]">
+                                                            {formatDonationValue(d.valor)}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-right">
+                                                            {donationLink ? (
+                                                                <a
+                                                                    href={donationLink}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="inline-flex items-center rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-[#94a3b8] transition-colors hover:border-[#D4AF37]/30 hover:text-[#D4AF37]"
+                                                                >
+                                                                    Ver Arquivo
+                                                                </a>
+                                                            ) : (
+                                                                <span className="text-white/10">—</span>
+                                                            )}
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })
+                                        ) : (
+                                            <tr>
+                                                <td colSpan={4} className="py-12 text-center text-[#64748b] italic">
+                                                    Ainda não há doações registradas.
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </>
+    );
 }
