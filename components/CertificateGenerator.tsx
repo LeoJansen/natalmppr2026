@@ -1,7 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import { Great_Vibes } from "next/font/google";
 import { useState, useRef } from "react";
+
+const greatVibes = Great_Vibes({ subsets: ["latin"], weight: "400", display: "swap" });
 
 export function CertificateGenerator() {
   const [donorName, setDonorName] = useState("Dra. Vicenária Silva");
@@ -166,7 +169,9 @@ export function CertificateGenerator() {
                   Certificado de Gratidão conferido a
                 </p>
 
-                <div className="mb-8 px-4 font-pinyon text-[60px] leading-tight text-[#0f254a] drop-shadow-sm">
+                <div
+                  className={`mb-8 px-4 text-[60px] leading-tight text-[#0f254a] drop-shadow-sm ${greatVibes.className}`}
+                >
                   {donorName}
                 </div>
 
