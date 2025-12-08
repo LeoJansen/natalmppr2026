@@ -12,7 +12,7 @@ export function ManifestSection() {
                         </p>
                         <h2 className="font-playfair text-4xl font-semibold leading-tight text-[#9b9b9b] md:text-5xl">
                             Um gesto nosso, <br />
-                            <span className="italic text-[#9b9b9b]/80">um Natal inteiro para eles.</span>
+                            <span className="italic  text-[#122DA3]">um Natal inteiro para eles.</span>
                         </h2>
                     </div>
 
