@@ -1,9 +1,30 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+import { ensureGsapPlugins, gsap } from "@/lib/gsapClient";
+
 export function HeroContent() {
+    const rootRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        ensureGsapPlugins();
+        if (!rootRef.current) return;
+
+        const ctx = gsap.context(() => {
+            gsap.from("[data-gsap='hero-content']", {
+                opacity: 0,
+                y: 18,
+                duration: 0.9,
+                ease: "power3.out",
+            });
+        }, rootRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <div className="relative z-10 flex h-full flex-col justify-center px-6 lg:px-20">
-            <div className="max-w-4xl space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+        <div ref={rootRef} className="relative z-10 flex h-full flex-col justify-center px-6 lg:px-20">
+            <div data-gsap="hero-content" className="max-w-4xl space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
                 <div>
                     <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-[#D4AF37] backdrop-blur-sm">
                         <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" />

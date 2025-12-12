@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { DONATIONS_API_URL } from "@/lib/api";
+import { ensureGsapPlugins, gsap, ScrollTrigger } from "@/lib/gsapClient";
 
 type Doador = {
     nome: string;
@@ -21,6 +22,10 @@ export function TransparencyPanel() {
     const [stats, setStats] = useState<DonationStats>({ total: 0, doadores: [] });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const mobileSectionRef = useRef<HTMLElement | null>(null);
+    const desktopSectionRef = useRef<HTMLElement | null>(null);
+
+    const GOAL_TOTAL = 6500;
 
     const currencyFormatter = useMemo(() => new Intl.NumberFormat("pt-BR", {
         style: "currency",
@@ -32,6 +37,21 @@ export function TransparencyPanel() {
     }), []);
 
     const formattedTotal = useMemo(() => currencyFormatter.format(stats.total || 0), [currencyFormatter, stats.total]);
+    const formattedGoal = useMemo(() => currencyFormatter.format(GOAL_TOTAL), [currencyFormatter]);
+
+    const progress = useMemo(() => {
+        const total = Number(stats.total || 0);
+        if (!Number.isFinite(total) || total <= 0) return 0;
+        return Math.min((total / GOAL_TOTAL) * 100, 100);
+    }, [stats.total, GOAL_TOTAL]);
+
+    const remaining = useMemo(() => {
+        const total = Number(stats.total || 0);
+        if (!Number.isFinite(total) || total <= 0) return GOAL_TOTAL;
+        return Math.max(GOAL_TOTAL - total, 0);
+    }, [stats.total, GOAL_TOTAL]);
+
+    const formattedRemaining = useMemo(() => currencyFormatter.format(remaining), [currencyFormatter, remaining]);
 
     const formatDonationDate = (value: string) => {
         if (!value) return "—";
@@ -76,10 +96,68 @@ export function TransparencyPanel() {
         return () => clearInterval(intervalId);
     }, []);
 
+    useEffect(() => {
+        ensureGsapPlugins();
+
+        const mobileEl = mobileSectionRef.current;
+        const desktopEl = desktopSectionRef.current;
+
+        const ctx = gsap.context(() => {
+            if (mobileEl) {
+                gsap.from("[data-gsap='transparency-mobile-card']", {
+                    opacity: 0,
+                    y: 18,
+                    duration: 0.7,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: mobileEl,
+                        start: "top 90%",
+                    },
+                });
+            }
+
+            if (desktopEl) {
+                gsap.fromTo(
+                    [
+                        "[data-gsap='transparency-header']",
+                        "[data-gsap='transparency-total']",
+                        "[data-gsap='transparency-table']",
+                    ],
+                    {
+                        opacity: 0,
+                        y: 26,
+                    },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.9,
+                        ease: "power3.out",
+                        stagger: 0.12,
+                        clearProps: "opacity,transform",
+                        immediateRender: false,
+                        scrollTrigger: {
+                            trigger: desktopEl,
+                            start: "top 80%",
+                        },
+                    }
+                );
+            }
+        });
+
+        return () => ctx.revert();
+    }, []);
+
+    useEffect(() => {
+        // The table content changes after fetch; keep ScrollTrigger measurements accurate.
+        if (!loading) {
+            ScrollTrigger.refresh();
+        }
+    }, [loading, stats.doadores.length]);
+
     return (
         <>
-            <section className="w-full px-4 py-12 md:hidden">
-                <div className="glass-panel mx-auto max-w-3xl rounded-3xl p-8 text-center shadow-lg">
+            <section ref={mobileSectionRef} className="w-full px-4 py-12 md:hidden">
+                <div data-gsap="transparency-mobile-card" className="glass-panel mx-auto max-w-3xl rounded-3xl p-8 text-center shadow-lg">
                     <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
                         Transparência
                     </p>
@@ -89,11 +167,11 @@ export function TransparencyPanel() {
                 </div>
             </section>
 
-            <section className="hidden w-full px-4 py-24 md:block bg-[#020617] relative">
+            <section ref={desktopSectionRef} className="hidden w-full px-4 py-24 md:block bg-[#020617] relative">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#0f172a] via-[#020617] to-[#020617] opacity-60"></div>
 
                 <div className="relative mx-auto max-w-7xl">
-                    <div className="flex flex-wrap items-end justify-between gap-8 mb-12">
+                    <div data-gsap="transparency-header" className="flex flex-wrap items-end justify-between gap-8 mb-12">
                         <div>
                             <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[#EB9E50]">
                                 Transparência
@@ -114,19 +192,32 @@ export function TransparencyPanel() {
 
                     <div className="grid gap-8 lg:grid-cols-[300px_1fr]">
                         {/* Total Card */}
-                        <div className="glass-card h-fit rounded-3xl p-8">
+                        <div data-gsap="transparency-total" className="glass-card h-fit rounded-3xl p-8">
                             <p className="text-xs font-bold uppercase tracking-widest text-[#94a3b8]">Total Arrecadado</p>
                             <p className="mt-4 font-playfair text-5xl font-medium text-[#EB9E50]">{formattedTotal}</p>
-                            <div className="mt-4 h-1 w-full rounded-full bg-white/5">
-                                <div className="h-full w-24 rounded-full bg-[#EB9E50]/50" />
+                            <div className="mt-4 flex items-center justify-between gap-4 text-xs font-semibold uppercase tracking-widest text-[#64748b]">
+                                <span>Meta: {formattedGoal}</span>
+                                <span>{progress.toFixed(0)}%</span>
+                            </div>
+                            <div className="mt-3 h-1 w-full rounded-full bg-white/5" aria-label="Progresso em relação à meta">
+                                <div
+                                    className="h-full rounded-full bg-[#EB9E50]/70"
+                                    style={{ width: `${progress}%` }}
+                                />
                             </div>
                             <p className="mt-4 text-sm text-[#64748b]">
-                                * Valores atualizados em tempo real.
+                                {remaining > 0 ? (
+                                    <>
+                                        Faltam <span className="font-semibold text-[#94a3b8]">{formattedRemaining}</span> para atingir a meta.
+                                    </>
+                                ) : (
+                                    <>Meta atingida 🎉</>
+                                )}
                             </p>
                         </div>
 
                         {/* Table Card */}
-                        <div className="glass-panel overflow-hidden rounded-3xl border border-white/5 bg-[#0f172a]/40">
+                        <div data-gsap="transparency-table" className="glass-panel overflow-hidden rounded-3xl border border-white/5 bg-[#0f172a]/40">
                             <div className="max-h-[600px] overflow-y-auto custom-scrollbar">
                                 <table className="w-full text-left">
                                     <thead className="sticky top-0 bg-[#0f172a] text-xs font-bold uppercase tracking-widest text-[#64748b] shadow-sm">

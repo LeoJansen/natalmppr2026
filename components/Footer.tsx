@@ -1,9 +1,35 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useRef } from "react";
+import { ensureGsapPlugins, gsap } from "@/lib/gsapClient";
 
 export function Footer() {
+    const footerRef = useRef<HTMLElement | null>(null);
+
+    useEffect(() => {
+        ensureGsapPlugins();
+        if (!footerRef.current) return;
+
+        const ctx = gsap.context(() => {
+            gsap.from("[data-gsap='footer-inner']", {
+                opacity: 0,
+                y: 18,
+                duration: 0.8,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: footerRef.current,
+                    start: "top 92%",
+                },
+            });
+        }, footerRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <footer className="relative border-t border-white/5 bg-[#020617] px-6 py-12 text-center text-sm text-[#94a3b8]">
-            <div className="mx-auto max-w-4xl space-y-6">
+        <footer ref={footerRef} className="relative border-t border-white/5 bg-[#020617] px-6 py-12 text-center text-sm text-[#94a3b8]">
+            <div data-gsap="footer-inner" className="mx-auto max-w-4xl space-y-6">
                 <div className="flex justify-center">
                     <div className="rounded-full bg-white/5 p-4 ring-1 ring-white/10">
                         <Image

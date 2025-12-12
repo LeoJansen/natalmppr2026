@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { contractors } from "@/lib/contractors";
 import { DONATIONS_API_URL } from "@/lib/api";
+import { ensureGsapPlugins, gsap } from "@/lib/gsapClient";
 
 const REFRESH_INTERVAL_MS = 30_000;
 
@@ -14,6 +15,7 @@ export function ContractorDistribution() {
     const [totalRaised, setTotalRaised] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const sectionRef = useRef<HTMLElement | null>(null);
 
     const currencyFormatter = useMemo(() => new Intl.NumberFormat("pt-BR", {
         style: "currency",
@@ -61,14 +63,42 @@ export function ContractorDistribution() {
         };
     }, []);
 
+    useEffect(() => {
+        ensureGsapPlugins();
+        if (!sectionRef.current) return;
+
+        const ctx = gsap.context(() => {
+            gsap.from(
+                [
+                    "[data-gsap='rateio-header']",
+                    "[data-gsap='rateio-cards']",
+                    "[data-gsap='rateio-table']",
+                ],
+                {
+                    opacity: 0,
+                    y: 26,
+                    duration: 0.9,
+                    ease: "power3.out",
+                    stagger: 0.12,
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top 80%",
+                    },
+                }
+            );
+        }, sectionRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <section className="w-full bg-[#020617] px-4 pb-24 pt-8 relative">
+        <section ref={sectionRef} className="w-full bg-[#020617] px-4 pb-24 pt-8 relative">
             {/* Separator */}
             <div className="absolute top-0 left-0 w-full h-px bg-white/5"></div>
 
             <div className="mx-auto max-w-7xl">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
-                    <div className="max-w-xl">
+                    <div data-gsap="rateio-header" className="max-w-xl">
                         <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37]">Rateio entre terceirizados</p>
                         <h2 className="font-playfair text-3xl font-medium text-white md:text-4xl">
                             Como garantimos que todos recebam o reconhecimento
@@ -79,7 +109,7 @@ export function ContractorDistribution() {
                         </p>
                     </div>
 
-                    <div className="flex flex-col gap-4 sm:flex-row">
+                    <div data-gsap="rateio-cards" className="flex flex-col gap-4 sm:flex-row">
                         <div className="glass-card rounded-2xl p-6 min-w-[200px]">
                             <p className="text-xs font-bold uppercase tracking-widest text-[#64748b]">Total</p>
                             <p className="mt-2 text-2xl font-bold text-[#EB9E50]">{loading && totalRaised === 0 ? "..." : formattedTotal}</p>
@@ -97,7 +127,7 @@ export function ContractorDistribution() {
                     </div>
                 )}
 
-                <div className="glass-panel overflow-hidden rounded-3xl border border-white/5 bg-[#0f172a]/40">
+                <div data-gsap="rateio-table" className="glass-panel overflow-hidden rounded-3xl border border-white/5 bg-[#0f172a]/40">
                     <div className="max-h-[600px] overflow-y-auto custom-scrollbar">
                         <table className="w-full text-left">
                             <thead className="sticky top-0 bg-[#0f172a] text-xs font-bold uppercase tracking-widest text-[#64748b] shadow-sm">

@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { Great_Vibes } from "next/font/google";
-import { useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ensureGsapPlugins, gsap } from "@/lib/gsapClient";
 
 const greatVibes = Great_Vibes({ subsets: ["latin"], weight: "400", display: "swap" });
 
@@ -15,10 +16,38 @@ export function CertificateGenerator() {
   
   // Referência para a área de impressão
   const certificateRef = useRef<HTMLDivElement>(null);
+  const controlsRef = useRef<HTMLDivElement>(null);
 
   const handlePrint = () => {
     window.print();
   };
+
+  useEffect(() => {
+    ensureGsapPlugins();
+
+    const ctx = gsap.context(() => {
+      if (controlsRef.current) {
+        gsap.from(controlsRef.current, {
+          opacity: 0,
+          y: 18,
+          duration: 0.8,
+          ease: "power3.out",
+        });
+      }
+
+      if (certificateRef.current) {
+        gsap.from(certificateRef.current, {
+          opacity: 0,
+          y: 22,
+          duration: 0.9,
+          ease: "power3.out",
+          delay: 0.1,
+        });
+      }
+    });
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section className="w-full bg-[#EBEBE6] px-4 py-16 print:bg-white print:p-0">
@@ -54,7 +83,7 @@ export function CertificateGenerator() {
 
       <div className="mx-auto max-w-6xl space-y-8">
         {/* Área de Controles (Escondida na impressão) */}
-        <div className="no-print rounded-3xl bg-white p-8 shadow-lg border border-[#C5A059]/20">
+        <div ref={controlsRef} className="no-print rounded-3xl bg-white p-8 shadow-lg border border-[#C5A059]/20">
           <div className="mb-6">
             <p className="text-sm font-bold uppercase tracking-widest text-[#C5A059]">
               Uso Interno

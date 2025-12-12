@@ -1,11 +1,13 @@
 "use client";
 
-import { type FormEvent, type KeyboardEvent, useState } from "react";
+import { type FormEvent, type KeyboardEvent, useEffect, useRef, useState } from "react";
 import { DONATIONS_API_URL } from "@/lib/api";
+import { ensureGsapPlugins, gsap } from "@/lib/gsapClient";
 
 export function DonationForm() {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const sectionRef = useRef<HTMLElement | null>(null);
 
     const blockDecimalInput = (event: KeyboardEvent<HTMLInputElement>) => {
         if ([".", ",", "Decimal", "NumpadDecimal"].includes(event.key)) {
@@ -70,11 +72,49 @@ export function DonationForm() {
         };
     };
 
+    useEffect(() => {
+        ensureGsapPlugins();
+
+        if (!sectionRef.current) return;
+
+        const ctx = gsap.context(() => {
+            if (success) {
+                gsap.from("[data-gsap='donationform-success']", {
+                    opacity: 0,
+                    y: 18,
+                    duration: 0.7,
+                    ease: "power3.out",
+                });
+                return;
+            }
+
+            gsap.from(
+                [
+                    "[data-gsap='donationform-header']",
+                    "[data-gsap='donationform-form']",
+                ],
+                {
+                    opacity: 0,
+                    y: 24,
+                    duration: 0.85,
+                    stagger: 0.12,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top 85%",
+                    },
+                }
+            );
+        }, sectionRef);
+
+        return () => ctx.revert();
+    }, [success]);
+
     if (success) {
         return (
-            <section className="w-full bg-[#020617] px-4 pb-20 pt-8">
+            <section ref={sectionRef} className="w-full bg-[#020617] px-4 pb-20 pt-8">
                 <div className="mx-auto max-w-3xl text-center">
-                    <div className="glass-panel relative overflow-hidden rounded-3xl p-10 border border-[#EB9E50]/30 shadow-[0_0_80px_-20px_rgba(212,175,55,0.15)]">
+                    <div data-gsap="donationform-success" className="glass-panel relative overflow-hidden rounded-3xl p-10 border border-[#EB9E50]/30 shadow-[0_0_80px_-20px_rgba(212,175,55,0.15)]">
 
                         {/* Shine Effect */}
                         <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-[#EB9E50] to-transparent opacity-50" />
@@ -106,10 +146,10 @@ export function DonationForm() {
     }
 
     return (
-        <section className="w-full bg-[#020617] px-4 pb-24 pt-8">
+        <section ref={sectionRef} className="w-full bg-[#020617] px-4 pb-24 pt-8">
             <div className="mx-auto max-w-3xl">
 
-                <div className="mb-10 text-center">
+                <div data-gsap="donationform-header" className="mb-10 text-center">
                     <span className="inline-block h-px w-24 bg-linear-to-r from-transparent via-[#D4AF37]/50 to-transparent mb-6"></span>
                     <h2 className="font-playfair text-3xl font-semibold text-white">
                         Envie seu Comprovante
@@ -119,7 +159,7 @@ export function DonationForm() {
                     </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form data-gsap="donationform-form" onSubmit={handleSubmit} className="space-y-6">
                     <div className="group">
                         <label className="mb-2 block text-xs font-bold uppercase tracking-widest text-[#64748b] transition-colors group-focus-within:text-[#EB9E50]">
                             Nome Completo

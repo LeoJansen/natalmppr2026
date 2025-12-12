@@ -1,11 +1,45 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useRef } from "react";
+import { ensureGsapPlugins, gsap } from "@/lib/gsapClient";
 
 export function ManifestSection() {
+    const sectionRef = useRef<HTMLElement | null>(null);
+
+    useEffect(() => {
+        ensureGsapPlugins();
+        if (!sectionRef.current) return;
+
+        const ctx = gsap.context(() => {
+            gsap.from(
+                ["[data-gsap='manifest-text']", "[data-gsap='manifest-image']"],
+                {
+                    opacity: 0,
+                    y: 28,
+                    duration: 0.9,
+                    stagger: 0.12,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top 80%",
+                    },
+                }
+            );
+        }, sectionRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <section id="manifesto" className="relative z-10 w-full overflow-hidden bg-white px-6 py-24 md:py-32 lg:px-20">
+        <section
+            ref={sectionRef}
+            id="manifesto"
+            className="relative z-10 w-full overflow-hidden bg-white px-6 py-24 md:py-32 lg:px-20"
+        >
             <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:gap-20">
                 {/* Text Content */}
-                <div className="flex flex-col justify-center space-y-8">
+                <div data-gsap="manifest-text" className="flex flex-col justify-center space-y-8">
                     <div>
                         <p className="mb-4 text-sm font-bold uppercase tracking-widest text-[#EB9E50]">
                             Manifesto da 10ª Edição
@@ -39,7 +73,7 @@ export function ManifestSection() {
                 </div>
 
                 {/* Image Composition */}
-                <div className="relative">
+                <div data-gsap="manifest-image" className="relative">
                     <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl shadow-2xl">
                         <Image
                             src="/cartao3.png"

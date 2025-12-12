@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ensureGsapPlugins, gsap } from "@/lib/gsapClient";
 
 type DonationCardProps = {
     pixKey: string;
@@ -11,26 +12,57 @@ type CopyPixButtonProps = {
 };
 
 export function DonationCard({ pixKey }: DonationCardProps) {
+    const sectionRef = useRef<HTMLElement | null>(null);
+
+    useEffect(() => {
+        ensureGsapPlugins();
+        if (!sectionRef.current) return;
+
+        const ctx = gsap.context(() => {
+            gsap.from(
+                [
+                    "[data-gsap='donationcard-kicker']",
+                    "[data-gsap='donationcard-title']",
+                    "[data-gsap='donationcard-subtitle']",
+                    "[data-gsap='donationcard-pix']",
+                ],
+                {
+                    opacity: 0,
+                    y: 22,
+                    duration: 0.8,
+                    stagger: 0.08,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top 80%",
+                    },
+                }
+            );
+        }, sectionRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <section id="doacao" className="relative w-full bg-[#020617] py-24 px-6">
+        <section ref={sectionRef} id="doacao" className="relative w-full bg-[#020617] py-24 px-6">
             <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#EB9E50]/50 to-transparent"></div>
 
             <div className="mx-auto max-w-4xl text-center">
                 <div className="glass-panel rounded-3xl p-10 md:p-16 shadow-[0_0_50px_-12px_rgba(212,175,55,0.25)] border border-[#ffffff]/10">
-                    <p className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-[#EB9E50]">
+                    <p data-gsap="donationcard-kicker" className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-[#EB9E50]">
                         Fazer Doação
                     </p>
-                    <h2 className="mb-6 font-playfair text-3xl font-semibold text-white md:text-5xl">
+                    <h2 data-gsap="donationcard-title" className="mb-6 font-playfair text-3xl font-semibold text-white md:text-5xl">
                         Sua contribuição faz a diferença
                     </h2>
-                    <p className="mb-10 text-lg text-[#94a3b8]">
+                    <p data-gsap="donationcard-subtitle" className="mb-10 text-lg text-[#94a3b8]">
                         Utilize a chave PIX exclusiva abaixo para realizar sua doação.
                         <br className="hidden md:block" />
                         Após a transferência, envie o comprovante no formulário a seguir.
                     </p>
 
                     <div className="mx-auto max-w-xl">
-                        <div className="group relative overflow-hidden rounded-2xl bg-[#0f172a] p-1 ring-1 ring-[#1e293b] transition-all hover:ring-[#EB9E50]/50">
+                        <div data-gsap="donationcard-pix" className="group relative overflow-hidden rounded-2xl bg-[#0f172a] p-1 ring-1 ring-[#1e293b] transition-all hover:ring-[#EB9E50]/50">
                             <div className="relative flex flex-col items-center justify-between gap-4 rounded-xl bg-[#020617] px-6 py-6 sm:flex-row sm:py-4">
                                 <span className="truncate text-lg font-medium text-[#94a3b8] sm:text-xl">
                                     {pixKey}
