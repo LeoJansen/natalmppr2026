@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { contractors } from "@/lib/contractors";
-import { GOOGLE_APPS_SCRIPT_URL } from "@/lib/api";
+import { DONATIONS_API_URL } from "@/lib/api";
 
 const REFRESH_INTERVAL_MS = 30_000;
 
@@ -31,7 +31,7 @@ export function ContractorDistribution() {
         const fetchTotal = async () => {
             try {
                 setError(null);
-                const res = await fetch(GOOGLE_APPS_SCRIPT_URL, { cache: "no-store" });
+                const res = await fetch(DONATIONS_API_URL, { cache: "no-store" });
                 if (!res.ok) {
                     throw new Error("Falha ao carregar o total arrecadado");
                 }

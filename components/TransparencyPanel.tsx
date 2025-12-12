@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { GOOGLE_APPS_SCRIPT_URL } from "@/lib/api";
+import { DONATIONS_API_URL } from "@/lib/api";
 
 type Doador = {
     nome: string;
@@ -57,7 +57,7 @@ export function TransparencyPanel() {
     const fetchStats = async () => {
         try {
             setError(null);
-            const res = await fetch(GOOGLE_APPS_SCRIPT_URL, { cache: "no-store" });
+            const res = await fetch(DONATIONS_API_URL, { cache: "no-store" });
             if (!res.ok) throw new Error("Falha ao carregar os dados");
 
             const data: DonationStats = await res.json();

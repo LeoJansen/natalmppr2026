@@ -1,7 +1,7 @@
 "use client";
 
 import { type FormEvent, type KeyboardEvent, useState } from "react";
-import { GOOGLE_APPS_SCRIPT_URL } from "@/lib/api";
+import { DONATIONS_API_URL } from "@/lib/api";
 
 export function DonationForm() {
     const [loading, setLoading] = useState(false);
@@ -48,12 +48,15 @@ export function DonationForm() {
             };
 
             try {
-                await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                const response = await fetch(DONATIONS_API_URL, {
                     method: "POST",
                     body: JSON.stringify(payload),
-                    mode: "no-cors",
-                    headers: { "Content-Type": "text/plain" },
+                    headers: { "Content-Type": "application/json" },
                 });
+
+                if (!response.ok) {
+                    throw new Error("Falha ao enviar o comprovante.");
+                }
 
                 setSuccess(true);
                 form.reset();
@@ -74,7 +77,7 @@ export function DonationForm() {
                     <div className="glass-panel relative overflow-hidden rounded-3xl p-10 border border-[#EB9E50]/30 shadow-[0_0_80px_-20px_rgba(212,175,55,0.15)]">
 
                         {/* Shine Effect */}
-                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#EB9E50] to-transparent opacity-50" />
+                        <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-[#EB9E50] to-transparent opacity-50" />
 
                         <div className="mb-6 flex justify-center">
                             <div className="rounded-full bg-[#EB9E50]/10 p-4 ring-1 ring-[#EB9E50]/30">
@@ -107,7 +110,7 @@ export function DonationForm() {
             <div className="mx-auto max-w-3xl">
 
                 <div className="mb-10 text-center">
-                    <span className="inline-block h-px w-24 bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent mb-6"></span>
+                    <span className="inline-block h-px w-24 bg-linear-to-r from-transparent via-[#D4AF37]/50 to-transparent mb-6"></span>
                     <h2 className="font-playfair text-3xl font-semibold text-white">
                         Envie seu Comprovante
                     </h2>
@@ -160,6 +163,7 @@ export function DonationForm() {
                                 type="file"
                                 accept="image/*,application/pdf"
                                 required
+                                title="Enviar comprovante de doação"
                                 className="w-full cursor-pointer rounded-xl border border-dashed border-[#334155] bg-[#0f172a]/50 p-6 text-sm text-gray-400 file:mr-4 file:cursor-pointer file:rounded-full file:border-0 file:bg-[#EB9E50] file:px-4 file:py-2 file:text-xs file:font-semibold file:text-[#020617] file:transition-colors hover:file:bg-[#a1862c] focus:border-[#EB9E50] focus:outline-none"
                             />
                         </div>

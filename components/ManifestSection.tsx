@@ -32,8 +32,8 @@ export function ManifestSection() {
                             O que começou como uma iniciativa tímida tornou-se nossa tradição mais nobre.
                         </p>
                         <p className="border-l-4 border-[#D4AF37] pl-6 font-playfair text-xl italic text-[#9b9b9b]">
-                            "Esta Edição Histórica não é caridade, é reconhecimento.
-                            Garantimos que quem cuida da nossa segunda casa leve conforto para a sua própria casa."
+                            &ldquo;Esta Edição Histórica não é caridade, é reconhecimento.
+                            Garantimos que quem cuida da nossa segunda casa leve conforto para a sua própria casa.&rdquo;
                         </p>
                     </div>
                 </div>
